@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قلک سیگار</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="container">
+        <h1>🚬 قلک سیگار</h1>
+        <p class="subtitle">هر دقیقه پول جمع کن، هر نخ از قلک کم کن!</p>
+
+        <section class="card">
+            <h2>تنظیمات</h2>
+
+            <label for="packPrice">قیمت پاکت (تومان)</label>
+            <input type="number" id="packPrice" value="60000" min="0">
+
+            <label for="packCount">تعداد نخ در پاکت</label>
+            <input type="number" id="packCount" value="20" min="1">
+
+            <label for="dailyLimit">سقف مصرف روزانه (نخ)</label>
+            <input type="number" id="dailyLimit" value="20" min="0">
+
+            <button id="saveSettings">ثبت تنظیمات</button>
+        </section>
+
+        <section class="card balance-card">
+            <p>موجودی قلک</p>
+            <h2 id="balance">۰ تومان</h2>
+
+            <div class="stats">
+                <div>
+                    <span>پول جمع‌شده</span>
+                    <strong id="earned">۰</strong>
+                </div>
+                <div>
+                    <span>هزینه سیگار</span>
+                    <strong id="spent">۰</strong>
+                </div>
+                <div>
+                    <span>قیمت هر نخ</span>
+                    <strong id="stickPrice">۰</strong>
+                </div>
+            </div>
+
+            <button id="smokeButton" class="smoke">
+                🚬 کشیدم؛ یک نخ کم کن
+            </button>
+
+            <button id="undoButton" class="secondary">
+                برگرداندن آخرین ثبت
+            </button>
+        </section>
+
+        <section class="card">
+            <h2>سابقه امروز</h2>
+            <ul id="history">
+                <li>هنوز چیزی ثبت نشده.</li>
+            </ul>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

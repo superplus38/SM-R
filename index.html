@@ -2,68 +2,76 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قلک سیگار</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111827">
+  <title>قلک سیگار</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <main class="container">
+    <header>
+      <h1>🐷 قلک سیگار</h1>
+      <p class="subtitle">پول هر نخ سیگار رو حساب کن، نه فقط تعدادش رو.</p>
+    </header>
 
-    <main class="container">
-        <h1>🚬 قلک سیگار</h1>
-        <p class="subtitle">هر دقیقه پول جمع کن، هر نخ از قلک کم کن!</p>
+    <section class="card balance-card">
+      <p>موجودی قلک</p>
+      <div class="balance" id="balance">۰ تومان</div>
+      <p class="small" id="elapsed">هنوز شروع نکردی</p>
+    </section>
 
-        <section class="card">
-            <h2>تنظیمات</h2>
+    <section class="card">
+      <h2>⚙️ تنظیمات</h2>
 
-            <label for="packPrice">قیمت پاکت (تومان)</label>
-            <input type="number" id="packPrice" value="60000" min="0">
+      <label for="packPrice">قیمت یک پاکت (تومان)</label>
+      <input id="packPrice" type="number" min="1" step="1" placeholder="مثلاً ۸۰۰۰۰">
 
-            <label for="packCount">تعداد نخ در پاکت</label>
-            <input type="number" id="packCount" value="20" min="1">
+      <label for="packCount">تعداد نخ در هر پاکت</label>
+      <input id="packCount" type="number" min="1" step="1" value="20">
 
-            <label for="dailyLimit">سقف مصرف روزانه (نخ)</label>
-            <input type="number" id="dailyLimit" value="20" min="0">
+      <label for="dailyLimit">سقف مصرف روزانه (نخ)</label>
+      <input id="dailyLimit" type="number" min="1" step="1" placeholder="مثلاً ۱۰">
 
-            <button id="saveSettings">ثبت تنظیمات</button>
-        </section>
+      <button id="saveSettings" class="secondary">ذخیره تنظیمات و شروع از صفر</button>
+      <p class="hint">با ذخیره تنظیمات، موجودی و تاریخچه صفر می‌شوند و زمان جدید شروع می‌شود.</p>
+    </section>
 
-        <section class="card balance-card">
-            <p>موجودی قلک</p>
-            <h2 id="balance">۰ تومان</h2>
+    <section class="stats">
+      <div class="card stat">
+        <p>هزینه هر نخ</p>
+        <strong id="stickCost">—</strong>
+      </div>
+      <div class="card stat">
+        <p>جمع‌شده از شروع</p>
+        <strong id="earned">۰ تومان</strong>
+      </div>
+      <div class="card stat">
+        <p>خرج سیگار</p>
+        <strong id="spent">۰ تومان</strong>
+      </div>
+    </section>
 
-            <div class="stats">
-                <div>
-                    <span>پول جمع‌شده</span>
-                    <strong id="earned">۰</strong>
-                </div>
-                <div>
-                    <span>هزینه سیگار</span>
-                    <strong id="spent">۰</strong>
-                </div>
-                <div>
-                    <span>قیمت هر نخ</span>
-                    <strong id="stickPrice">۰</strong>
-                </div>
-            </div>
+    <section class="card">
+      <h2>🚬 ثبت مصرف</h2>
+      <button id="smokeButton" class="danger">یک نخ سیگار کشیدم</button>
+      <button id="undoButton" class="secondary">برگرداندن آخرین نخ</button>
+      <p id="message" class="message" role="status"></p>
+    </section>
 
-            <button id="smokeButton" class="smoke">
-                🚬 کشیدم؛ یک نخ کم کن
-            </button>
+    <section class="card">
+      <div class="history-heading">
+        <h2>📋 تاریخچه</h2>
+        <button id="clearHistory" class="text-button">پاک‌کردن تاریخچه</button>
+      </div>
+      <ul id="history">
+        <li class="empty">هنوز چیزی ثبت نشده.</li>
+      </ul>
+    </section>
 
-            <button id="undoButton" class="secondary">
-                برگرداندن آخرین ثبت
-            </button>
-        </section>
+    <footer>اطلاعات روی همین مرورگر ذخیره می‌شود.</footer>
+  </main>
 
-        <section class="card">
-            <h2>سابقه امروز</h2>
-            <ul id="history">
-                <li>هنوز چیزی ثبت نشده.</li>
-            </ul>
-        </section>
-    </main>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,167 +1,218 @@
 
-const $ = (id) => document.getElementById(id);
-
-const STORAGE_KEY = "gholake-cigarette-v1";
-
-function getToday() {
-    const d = new Date();
-
-    return [
-        d.getFullYear(),
-        String(d.getMonth() + 1).padStart(2, "0"),
-        String(d.getDate()).padStart(2, "0")
-    ].join("-");
+* {
+  box-sizing: border-box;
 }
 
-function loadData() {
-    try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-
-        if (
-            saved &&
-            saved.day === getToday() &&
-            Array.isArray(saved.history)
-        ) {
-            return saved;
-        }
-    } catch (error) {
-        console.error("خطا در خواندن اطلاعات:", error);
-    }
-
-    return {
-        day: getToday(),
-        packPrice: 60000,
-        packCount: 20,
-        dailyLimit: 20,
-        history: []
-    };
+body {
+  margin: 0;
+  background: #0b1120;
+  color: #f3f4f6;
+  font-family: Tahoma, Arial, sans-serif;
+  line-height: 1.7;
 }
 
-let data = loadData();
-
-function saveData() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+.container {
+  width: min(100% - 24px, 600px);
+  margin: 24px auto;
 }
 
-function getStickPrice() {
-    return data.packPrice / Math.max(1, data.packCount);
+header {
+  text-align: center;
+  margin-bottom: 22px;
 }
 
-function getEarnedMoney() {
-    const now = new Date();
-
-    const minutes =
-        now.getHours() * 60 +
-        now.getMinutes() +
-        now.getSeconds() / 60;
-
-    const dailyBudget = getStickPrice() * data.dailyLimit;
-
-    return dailyBudget * minutes / 1440;
+h1 {
+  font-size: 29px;
+  margin: 0 0 6px;
 }
 
-function getSpentMoney() {
-    return data.history.reduce((total, item) => {
-        return total + item.cost;
-    }, 0);
+h2 {
+  font-size: 19px;
+  margin: 0 0 16px;
 }
 
-function formatMoney(value) {
-    return Math.round(value).toLocaleString("fa-IR");
+.subtitle,
+.small,
+.hint,
+footer {
+  color: #9ca3af;
+  font-size: 13px;
 }
 
-function render() {
-    const earned = getEarnedMoney();
-    const spent = getSpentMoney();
-    const balance = earned - spent;
-
-    $("balance").textContent =
-        formatMoney(balance) + " تومان";
-
-    $("balance").style.color =
-        balance < 0 ? "#ff7777" : "#70dba8";
-
-    $("earned").textContent = formatMoney(earned);
-    $("spent").textContent = formatMoney(spent);
-    $("stickPrice").textContent = formatMoney(getStickPrice());
-
-    const historyElement = $("history");
-
-    historyElement.innerHTML = "";
-
-    if (data.history.length === 0) {
-        const li = document.createElement("li");
-        li.textContent = "هنوز چیزی ثبت نشده.";
-        historyElement.appendChild(li);
-    } else {
-        [...data.history].reverse().forEach((item) => {
-            const li = document.createElement("li");
-
-            const time = new Date(item.time).toLocaleTimeString(
-                "fa-IR",
-                { hour: "2-digit", minute: "2-digit" }
-            );
-
-            li.textContent =
-                `${time} — ${item.label} — ` +
-                `${formatMoney(item.cost)} تومان`;
-
-            historyElement.appendChild(li);
-        });
-    }
+.card {
+  background: #172033;
+  border: 1px solid #2b364b;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
 }
 
-$("saveSettings").addEventListener("click", () => {
-    const price = Number($("packPrice").value);
-    const count = Number($("packCount").value);
-    const daily = Number($("dailyLimit").value);
+.balance-card {
+  text-align: center;
+  background: linear-gradient(145deg, #183b36, #172033);
+}
 
-    if (
-        !Number.isFinite(price) ||
-        price < 0 ||
-        !Number.isInteger(count) ||
-        count < 1 ||
-        !Number.isInteger(daily) ||
-        daily < 0
-    ) {
-        alert("لطفاً مقادیر معتبر وارد کن.");
-        return;
-    }
+.balance-card p {
+  margin: 0;
+  color: #cbd5e1;
+}
 
-    data.packPrice = price;
-    data.packCount = count;
-    data.dailyLimit = daily;
+.balance {
+  font-size: clamp(28px, 8vw, 40px);
+  font-weight: bold;
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
 
-    saveData();
-    render();
-});
+label {
+  display: block;
+  margin: 13px 0 6px;
+  font-size: 14px;
+}
 
-$("smokeButton").addEventListener("click", () => {
-    data.history.push({
-        label: "کشیدن یک نخ",
-        cost: getStickPrice(),
-        time: Date.now()
-    });
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #3b475c;
+  border-radius: 10px;
+  background: #0f172a;
+  color: white;
+  font: inherit;
+  font-size: 16px;
+  outline: none;
+}
 
-    saveData();
-    render();
-});
+input:focus {
+  border-color: #60a5fa;
+}
 
-$("undoButton").addEventListener("click", () => {
-    if (data.history.length === 0) {
-        return;
-    }
+button {
+  width: 100%;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 10px;
+  margin-top: 12px;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    data.history.pop();
+button:active {
+  transform: scale(0.99);
+}
 
-    saveData();
-    render();
-});
+.secondary {
+  background: #334155;
+  color: #f8fafc;
+}
 
-$("packPrice").value = data.packPrice;
-$("packCount").value = data.packCount;
-$("dailyLimit").value = data.dailyLimit;
+.danger {
+  background: #dc2626;
+  color: white;
+  padding: 15px;
+  font-size: 17px;
+}
 
-render();
+.text-button {
+  width: auto;
+  margin: 0;
+  padding: 6px 10px;
+  background: transparent;
+  color: #fca5a5;
+  font-size: 12px;
+}
 
-setInterval(render, 1000);
+.hint {
+  margin-bottom: 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat {
+  margin-bottom: 16px;
+  padding: 15px;
+  min-width: 0;
+}
+
+.stat p {
+  color: #9ca3af;
+  font-size: 12px;
+  margin: 0 0 6px;
+}
+
+.stat strong {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+}
+
+.history-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.history-heading h2 {
+  margin: 0;
+}
+
+#history {
+  padding: 0;
+  margin: 15px 0 0;
+  list-style: none;
+}
+
+#history li {
+  padding: 10px 0;
+  border-bottom: 1px solid #2b364b;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+#history li:last-child {
+  border-bottom: 0;
+}
+
+.empty {
+  color: #9ca3af;
+}
+
+.message {
+  margin-bottom: 0;
+  font-size: 13px;
+  color: #86efac;
+}
+
+.message.error {
+  color: #fca5a5;
+}
+
+footer {
+  text-align: center;
+  padding: 10px 0 25px;
+}
+
+@media (max-width: 380px) {
+  .container {
+    width: min(100% - 16px, 600px);
+    margin-top: 12px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .stat {
+    margin-bottom: 10px;
+  }
+}
